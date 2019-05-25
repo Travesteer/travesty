@@ -1,0 +1,15 @@
+
+Travesty/.settings/org.eclipse.jdt.core.prefs
+Travesty/.settings/org.eclipse.jdt.ui.prefs
+Travesty/.settings/org.eclipse.jpt.core.prefs
+*.prefs
+*.xml
+Travesty/filteredTweets.txt
+Travesty/identityOfTravesteer.txt
+Travesty/loaded20190515.txt
+Travesty/oldTravesty.java
+Travesty/src/main/java/com/travesteer/Tester.java
+Travesty/src/main/java/com/travesteer/TrumpListener.java
+Travesty/src/main/java/com/travesteer/TrumpTravestyListener.java
+Travesty/twitter4j.properties
+Travesty/twitterArchive.txt
