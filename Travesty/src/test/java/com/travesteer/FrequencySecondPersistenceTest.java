@@ -1,5 +1,5 @@
 /*
- * Created May 5, 2019 travesteer.  Copyright (c) 2019, Trump Travesy (travesteer@riseup.net).
+ * Created Jun 1, 2019 travesteer.  Copyright (c) 2019, Trump Travesty (travesteer@travesteer.com).
  *  All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -14,7 +14,7 @@
  *
  * This code may be used only for Good, not for Evil.
  * 
- * Neither the name of travesteaer nor the name of trumptravesty.com may be used to
+ * Neither the name of travesteer nor the name of travesteer.com may be used to
  * endorse or promote products derived from this software without specific prior written permission.
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
@@ -44,12 +44,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Exercises all object functionality.
- * 
- * @author travesteer
+ * @author travestaeer
  *
  */
-class FrequencyPersistenceTest
+class FrequencySecondPersistenceTest
 {
 	/**
 	 * The <code>EntityManager</code> for the test routines.
@@ -64,12 +62,12 @@ class FrequencyPersistenceTest
 	/**
 	 * The <code>ResidentPersistence</code> instance for the test routines.
 	 */
-	public static FrequencyPersistence TEST_FREQ_PERSISTENCE = null;
+	public static FrequencySecondPersistence TEST_FREQ_PERSISTENCE = null;
 
 	/**
-	 * The test <code>FirstOrderFrequency</code> instance.
+	 * The test <code>SecondOrderFrequency</code> instance.
 	 */
-	public static FirstOrderFrequency TEST_FREQ = null;
+	public static SecondOrderFrequency TEST_FREQ = null;
 
 	/**
 	 * @throws java.lang.Exception
@@ -77,10 +75,10 @@ class FrequencyPersistenceTest
 	@BeforeEach
 	void setUp() throws Exception
 	{
-		TEST_EMF = Persistence.createEntityManagerFactory("Travesty");
+		TEST_EMF = Persistence.createEntityManagerFactory("TravestySecond");
 		TEST_EM = TEST_EMF.createEntityManager();
-		TEST_FREQ_PERSISTENCE = new FrequencyPersistence(TEST_EM);
-		TEST_FREQ = FirstOrderFrequencyTest.setTestFreq();
+		TEST_FREQ_PERSISTENCE = new FrequencySecondPersistence(TEST_EM);
+		TEST_FREQ = SecondOrderFrequencyTest.setTestFreq();
 	}
 
 	/**
@@ -97,98 +95,91 @@ class FrequencyPersistenceTest
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#FrequencyPersistence(javax.persistence.EntityManager)}.
+	 * {@link com.travesteer.FrequencySecondPersistence#FrequencySecondPersistence(javax.persistence.EntityManager)}.
 	 */
 	@Test
-	final void testFrequencyPersistence()
+	final void testFrequencySecondPersistence()
 	{
 		TEST_FREQ_PERSISTENCE = null;
 		assertNull(TEST_FREQ_PERSISTENCE);
-		TEST_FREQ_PERSISTENCE = new FrequencyPersistence(TEST_EM);
+		TEST_FREQ_PERSISTENCE = new FrequencySecondPersistence(TEST_EM);
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#createFrequency(java.lang.String, java.lang.String, int)}.
+	 * {@link com.travesteer.FrequencySecondPersistence#createFrequency(java.lang.String, java.lang.String, java.lang.String, int)}.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	final void testCreateFrequency() throws Exception
 	{
-		FirstOrderFrequency newFreq = null;
-		newFreq = TEST_FREQ_PERSISTENCE.createFrequency(FrequencyIdTest.TEST_FIRST,
-				FrequencyIdTest.TEST_SECOND, FirstOrderFrequencyTest.TEST_COUNT);
+		SecondOrderFrequency newFreq = null;
+		newFreq = TEST_FREQ_PERSISTENCE.createFrequency(FrequencyIdSecondTest.TEST_FIRST,
+				FrequencyIdSecondTest.TEST_SECOND, FrequencyIdSecondTest.TEST_THIRD,
+				SecondOrderFrequencyTest.TEST_COUNT);
 		assert (newFreq.equals(TEST_FREQ));
 		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id);
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#findFrequencyByFirst()}.
-	 * @throws Exception 
-	 */
-	@Test
-	final void testFindFrequencyByFirst() throws Exception
-	{
-		Collection<FirstOrderFrequency> foundFreqs = TEST_FREQ_PERSISTENCE.findFrequenciesByFirst(
-				"Donald");
-		for (FirstOrderFrequency e : foundFreqs)
-			System.out.println("Found frequency: " + e);
-		foundFreqs = TEST_FREQ_PERSISTENCE.findFrequenciesByFirst("Joe");
-		for (FirstOrderFrequency e : foundFreqs)
-			System.out.println("Found frequency: " + e);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#findAllFrequencies()}.
-	 * @throws Exception 
-	 */
-	@Test
-	final void testFindAllFrequencies() throws Exception
-	{
-		Collection<FirstOrderFrequency> allFreqs = TEST_FREQ_PERSISTENCE.findAllFrequencies();
-		for (FirstOrderFrequency e : allFreqs)
-			System.out.println("Found frequency: " + e);
-	}
-
-	/**
-	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#findFrequency(com.travesteer.FrequencyId)}.
+	 * {@link com.travesteer.FrequencySecondPersistence#findFrequencyByFirstAndSecond()}.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	final void testFindFrequencyFrequencyId() throws Exception
+	final void testFindFrequencyByFirstAndSecond() throws Exception
 	{
-		FirstOrderFrequency newFreq = null;
-		assertNull(newFreq);
-		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getId());
-		assertNull(newFreq);
-		TEST_FREQ_PERSISTENCE.createFrequency(TEST_FREQ.getFirst(), TEST_FREQ.getSecond(), TEST_FREQ
-				.getCount());
-		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getId());
-		assertNotNull(newFreq);
-		assertTrue(newFreq.equals(TEST_FREQ));
-		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.getId());
+		SecondOrderFrequency newFreq = null;
+		newFreq = TEST_FREQ_PERSISTENCE.createFrequency(FrequencyIdSecondTest.TEST_FIRST,
+				FrequencyIdSecondTest.TEST_SECOND, FrequencyIdSecondTest.TEST_THIRD,
+				SecondOrderFrequencyTest.TEST_COUNT);
+		Collection<SecondOrderFrequency> foundFreqs = TEST_FREQ_PERSISTENCE
+				.findFrequenciesByFirstAndSecond("Donald", "John");
+		for (SecondOrderFrequency e : foundFreqs)
+			System.out.println("Found frequency: " + e);
+		foundFreqs = TEST_FREQ_PERSISTENCE.findFrequenciesByFirstAndSecond("Joe", "Blow");
+		for (SecondOrderFrequency e : foundFreqs)
+			System.out.println("Found frequency: " + e);
+		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id);
 	}
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#findFrequency(java.lang.String, java.lang.String)}.
-	 * @throws Exception 
+	 * {@link com.travesteer.FrequencySecondPersistence#findAllFrequencies()}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	final void testFindFrequencyStringString() throws Exception
+	final void testFindAllFrequencies() throws Exception
 	{
-		FirstOrderFrequency newFreq = null;
+		SecondOrderFrequency newFreq = null;
+		newFreq = TEST_FREQ_PERSISTENCE.createFrequency(FrequencyIdSecondTest.TEST_FIRST,
+				FrequencyIdSecondTest.TEST_SECOND, FrequencyIdSecondTest.TEST_THIRD,
+				SecondOrderFrequencyTest.TEST_COUNT);
+		Collection<SecondOrderFrequency> allFreqs = TEST_FREQ_PERSISTENCE.findAllFrequencies();
+		for (SecondOrderFrequency e : allFreqs)
+			System.out.println("Found frequency: " + e);
+		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id);
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.travesteer.FrequencySecondPersistence#findFrequency(com.travesteer.FrequencyIdSecond)}.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	final void testFindFrequencyFrequencyIdSecond() throws Exception
+	{
+		SecondOrderFrequency newFreq = null;
 		assertNull(newFreq);
-		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getFirst(), TEST_FREQ.getSecond());
+		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getId());
 		assertNull(newFreq);
-		TEST_FREQ_PERSISTENCE.createFrequency(TEST_FREQ.getFirst(), TEST_FREQ.getSecond(), TEST_FREQ
-				.getCount());
-		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getFirst(), TEST_FREQ.getSecond());
+		TEST_FREQ_PERSISTENCE.createFrequency(TEST_FREQ.id.first, TEST_FREQ.id.second,
+				TEST_FREQ.id.third, TEST_FREQ.getCount());
+		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.getId());
 		assertNotNull(newFreq);
 		assertTrue(newFreq.equals(TEST_FREQ));
 		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.getId());
@@ -196,13 +187,37 @@ class FrequencyPersistenceTest
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#incrementFrequency(com.travesteer.FirstOrderFrequency)}.
-	 * @throws Exception 
+	 * {@link com.travesteer.FrequencySecondPersistence#findFrequency(java.lang.String, java.lang.String, java.lang.String)}.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	final void testFindFrequencyStringStringString() throws Exception
+	{
+		SecondOrderFrequency newFreq = null;
+		assertNull(newFreq);
+		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.id.first, TEST_FREQ.id.second,
+				TEST_FREQ.id.third);
+		assertNull(newFreq);
+		TEST_FREQ_PERSISTENCE.createFrequency(TEST_FREQ.id.first, TEST_FREQ.id.second,
+				TEST_FREQ.id.third, TEST_FREQ.getCount());
+		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(TEST_FREQ.id.first, TEST_FREQ.id.second,
+				TEST_FREQ.id.third);
+		assertNotNull(newFreq);
+		assertTrue(newFreq.equals(TEST_FREQ));
+		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.getId());
+	}
+
+	/**
+	 * Test method for
+	 * {@link com.travesteer.FrequencySecondPersistence#incrementFrequency(com.travesteer.SecondOrderFrequency)}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	final void testIncrementFrequency() throws Exception
 	{
-		FirstOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
+		SecondOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
 		newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
 		assertTrue(newFreq.count == 2);
 		TEST_FREQ_PERSISTENCE.removeFrequency(TEST_FREQ.getId());
@@ -210,13 +225,14 @@ class FrequencyPersistenceTest
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#incrementFrequency(com.travesteer.FirstOrderFrequency)}.
-	 * @throws Exception 
+	 * {@link com.travesteer.FrequencySecondPersistence#incrementFrequency(com.travesteer.SecondOrderFrequency)}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	final void testIncrementFrequencyById() throws Exception
 	{
-		FirstOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
+		SecondOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
 		newFreq = TEST_FREQ_PERSISTENCE.incrementFrequencyById(TEST_FREQ.id);
 		assertTrue(newFreq.count == 2);
 		TEST_FREQ_PERSISTENCE.removeFrequency(TEST_FREQ.getId());
@@ -224,16 +240,16 @@ class FrequencyPersistenceTest
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#removeFrequency(com.travesteer.FrequencyId)}.
+	 * {@link com.travesteer.FrequencySecondPersistence#removeFrequency(com.travesteer.FrequencyIdSecond)}.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	final void testRemoveFrequencyFrequencyId() throws Exception
+	final void testRemoveFrequencyFrequencyIdSecond() throws Exception
 	{
-		FirstOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.createFrequency(
-				FrequencyIdTest.TEST_FIRST, FrequencyIdTest.TEST_SECOND,
-				FirstOrderFrequencyTest.TEST_COUNT);
+		SecondOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.createFrequency(
+				FrequencyIdSecondTest.TEST_FIRST, FrequencyIdSecondTest.TEST_SECOND,
+				FrequencyIdSecondTest.TEST_THIRD, SecondOrderFrequencyTest.TEST_COUNT);
 		assertTrue(newFreq.equals(TEST_FREQ));
 		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id);
 		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(newFreq.id);
@@ -242,31 +258,32 @@ class FrequencyPersistenceTest
 
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#removeFrequency(java.lang.String, java.lang.String)}.
-	 * @throws Exception 
+	 * {@link com.travesteer.FrequencySecondPersistence#removeFrequency(java.lang.String, java.lang.String, java.lang.String)}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	final void testRemoveFrequencyStringString() throws Exception
+	final void testRemoveFrequencyStringStringString() throws Exception
 	{
-		FirstOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.createFrequency(
-				FrequencyIdTest.TEST_FIRST, FrequencyIdTest.TEST_SECOND,
-				FirstOrderFrequencyTest.TEST_COUNT);
+		SecondOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.createFrequency(
+				FrequencyIdSecondTest.TEST_FIRST, FrequencyIdSecondTest.TEST_SECOND,
+				FrequencyIdSecondTest.TEST_THIRD, SecondOrderFrequencyTest.TEST_COUNT);
 		assertTrue(newFreq.equals(TEST_FREQ));
-		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id.first, newFreq.id.second);
+		TEST_FREQ_PERSISTENCE.removeFrequency(newFreq.id.first, newFreq.id.second, newFreq.id.third);
 		newFreq = TEST_FREQ_PERSISTENCE.findFrequency(newFreq.id);
 		assertNull(newFreq);
 	}
-
+	
 	/**
 	 * Test method for
-	 * {@link com.travesteer.FrequencyPersistence#updateFrequency(com.travesteer.FirstOrderFrequency)}.
+	 * {@link com.travesteer.FrequencySecondPersistence#updateFrequency(com.travesteer.SecondOrderFrequency)}.
 	 * @throws Exception 
 	 */
 	@Test
 	final void testUpdateFrequency() throws Exception
 	{
-		FirstOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
-		FirstOrderFrequency updatedFreq = TEST_FREQ_PERSISTENCE.updateFrequency(newFreq);
+		SecondOrderFrequency newFreq = TEST_FREQ_PERSISTENCE.incrementFrequency(TEST_FREQ);
+		SecondOrderFrequency updatedFreq = TEST_FREQ_PERSISTENCE.updateFrequency(newFreq);
 		assertTrue(newFreq.equals(updatedFreq));
 		newFreq.setCount(123);
 		assertFalse(newFreq.equals(updatedFreq));

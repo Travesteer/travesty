@@ -1,5 +1,5 @@
 /*
- * Created May 12, 2019 travesteer.  Copyright (c) 2019, Trump Travesty (travesteer@travesteer.com).
+ * Created Jun 1, 2019 travesteer.  Copyright (c) 2019, Trump Travesty (travesteer@travesteer.com).
  *  All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -39,13 +39,13 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Generates travesties of Trump's tweets as Markov chains based on his twitter
- * archive. Generated tweet goes to the console.
+ * Generates second-order Markov chain travesties of Trump's tweets based on his
+ * twitter archive. Generated tweet goes to the console.
  * 
  * @author travesteer
  *
  */
-public class GenerateTweet implements Constants
+public class GenerateSecondTweet implements Constants
 {
 	/**
 	 * Standard entry point.
@@ -55,89 +55,56 @@ public class GenerateTweet implements Constants
 	 */
 	public static void main(String[] args) throws Exception
 	{
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Travesty");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("TravestySecond");
 		EntityManager em = emf.createEntityManager();
-		FrequencyPersistence frequencyPersistence = new FrequencyPersistence(em);
-		String seed = new String();
+		FrequencySecondPersistence frequencySecondPersistence = new FrequencySecondPersistence(em);
+		String seed1 = new String();
+		String seed2 = new String();
 		Vector<String> tokens = new Vector<String>(AVERAGE_TOKEN_COUNT);
-		Vector<FirstOrderFrequency> frequencyDistribution = null;
+		Vector<SecondOrderFrequency> frequencyDistribution = null;
 		if (args.length == 0)
-			seed = BEGIN_TWEET;
-		else
-			seed = args[0];
-		tokens.add(seed);
-		FirstOrderFrequency currentFreq = null;
-		int random = 0;
-		while (!seed.equals(END_TWEET))
 		{
-			frequencyDistribution = (Vector<FirstOrderFrequency>) frequencyPersistence
-					.findFrequenciesByFirst(seed);
-			Iterator<FirstOrderFrequency> iterator = frequencyDistribution.iterator();
+			seed1 = BEGIN_TWEET;
+			seed2 = BEGIN_TWEET;
+		}
+		else
+		{
+			seed1 = args[1];
+			seed2 = args[2];
+		}
+		tokens.add(seed1);
+		tokens.add(seed2);
+		SecondOrderFrequency currentFreq = null;
+		int random = 0;
+		while (!seed2.equals(END_TWEET))
+		{
+			frequencyDistribution = (Vector<SecondOrderFrequency>) frequencySecondPersistence
+					.findFrequenciesByFirstAndSecond(seed1, seed2);
+			Iterator<SecondOrderFrequency> iterator = frequencyDistribution.iterator();
 			int total = 0;
 			while (iterator.hasNext())
 			{
-				currentFreq = (FirstOrderFrequency) iterator.next();
+				currentFreq = (SecondOrderFrequency) iterator.next();
 				total += currentFreq.count;
 			}
 			iterator = frequencyDistribution.iterator();
-			random = randomInt(1, total);
+			random = GenerateTweet.randomInt(1, total);
 			int runningTotal = 0;
 			while (iterator.hasNext() && runningTotal < random)
 			{
-				currentFreq = (FirstOrderFrequency) iterator.next();
+				currentFreq = (SecondOrderFrequency) iterator.next();
 				runningTotal += currentFreq.count;
 			}
-			seed = currentFreq.getSecond();
-			tokens.add(seed);
+			seed1 = currentFreq.id.second;
+			seed2 = currentFreq.id.third;
+			tokens.add(seed2);
 		}
 		Iterator<String> iterator = tokens.iterator();
 		Vector<String> unescapedTokens = new Vector<String>(tokens.size());
 		while (iterator.hasNext())
-			unescapedTokens.add(unEscape(iterator.next()));
+			unescapedTokens.add(GenerateTweet.unEscape(iterator.next()));
 		ParsedTweet generatedTweet = new ParsedTweet(unescapedTokens);
 		System.out.println("Generated Tweet: " + generatedTweet);
 		System.out.println("   Tweet Length: " + generatedTweet.toString().length());
 	}
-
-	/**
-	 * Generates a random <code>int</code> between (and including) a minimum and
-	 * a maximum. From <code>https://tinyurl.com/y5f65pwh</code>.
-	 * 
-	 * @param min
-	 *            The low end of the range.
-	 * @param max
-	 *            The high end of the range.
-	 * @return A random <code>int</code> between min and max.
-	 */
-	public static int randomInt(int min, int max)
-	{
-		return min + (int) (Math.random() * ((max - min) + 1));
-	}
-
-	/**
-	 * During database update, some characters or escaped or otherwise modified
-	 * to make Java strings and SQL query strings play well together. This
-	 * undoes that process.
-	 * 
-	 * @param inString
-	 *            The token as stored in the database.
-	 * @return The token with escaping undone.
-	 */
-	public static String unEscape(String inString)
-	{
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < inString.length(); i++)
-		{
-			char c = inString.charAt(i);
-			if (c == '~')
-			{
-				buffer.append('\'');
-				continue;
-			}
-			if (c != '\\')
-				buffer.append(c);
-		}
-		return buffer.toString();
-	}
-
 }

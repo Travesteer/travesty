@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Exercises all class functionality.
  * 
- * @author Geo
+ * @author travesteer
  *
  */
 class FirstOrderFrequencyTest
