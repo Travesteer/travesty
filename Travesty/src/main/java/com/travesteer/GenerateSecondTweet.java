@@ -58,20 +58,24 @@ public class GenerateSecondTweet implements Constants
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("TravestySecond");
 		EntityManager em = emf.createEntityManager();
 		FrequencySecondPersistence frequencySecondPersistence = new FrequencySecondPersistence(em);
-		String seed1 = new String();
-		String seed2 = new String();
+		ParsedTweet result = generateSecondOrder(frequencySecondPersistence);
+		System.out.println(result);
+	}
+
+	/**
+	 * Actually does all the generation.
+	 * 
+	 * @param frequencySecondPersistence
+	 * @return The generated <code>ParsedTweet</code>.
+	 * @throws Exception
+	 */
+	public static ParsedTweet generateSecondOrder(
+			FrequencySecondPersistence frequencySecondPersistence) throws Exception
+	{
+		String seed1 = BEGIN_TWEET;
+		String seed2 = BEGIN_TWEET;
 		Vector<String> tokens = new Vector<String>(AVERAGE_TOKEN_COUNT);
 		Vector<SecondOrderFrequency> frequencyDistribution = null;
-		if (args.length == 0)
-		{
-			seed1 = BEGIN_TWEET;
-			seed2 = BEGIN_TWEET;
-		}
-		else
-		{
-			seed1 = args[1];
-			seed2 = args[2];
-		}
 		tokens.add(seed1);
 		tokens.add(seed2);
 		SecondOrderFrequency currentFreq = null;
@@ -103,8 +107,6 @@ public class GenerateSecondTweet implements Constants
 		Vector<String> unescapedTokens = new Vector<String>(tokens.size());
 		while (iterator.hasNext())
 			unescapedTokens.add(GenerateTweet.unEscape(iterator.next()));
-		ParsedTweet generatedTweet = new ParsedTweet(unescapedTokens);
-		System.out.println("Generated Tweet: " + generatedTweet);
-		System.out.println("   Tweet Length: " + generatedTweet.toString().length());
+		return new ParsedTweet(unescapedTokens);
 	}
 }
